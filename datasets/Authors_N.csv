@@ -1,0 +1,57 @@
+Id,AuthorName,PlayName,CharacterName,Gender,Class,Divinity,BERT_Emotion
+1,Aeschylus,Agamemnon,Aegisthus,Male,Upper,Mortal,anger
+2,Aeschylus,Agamemnon,Agamemnon,Male,Upper,Mortal,anger
+3,Aeschylus,Agamemnon,Another Elder,Male,Upper,Mortal,anger
+4,Aeschylus,Agamemnon,Cassandra,Female,Upper,Mortal,fear
+5,Aeschylus,Agamemnon,Chorus,Male,Lower,Mortal,fear
+6,Aeschylus,Agamemnon,Chorus_Leader,Male,Upper,Mortal,joy
+7,Aeschylus,Agamemnon,Clytemnestra,Female,Upper,Mortal,anger
+8,Aeschylus,Agamemnon,Herald,Male,Lower,Mortal,joy
+9,Aeschylus,Agamemnon,One Elder,Male,Upper,Mortal,joy
+10,Aeschylus,Agamemnon,Watchman,Male,Lower,Mortal,joy
+11,Aeschylus,Eumenides,Apollo,Male,Upper,Immortal,anger
+12,Aeschylus,Eumenides,Athena,Female,Upper,Immortal,anger
+13,Aeschylus,Eumenides,Chorus,Female,Upper,Immortal,anger
+14,Aeschylus,Eumenides,Clytemnestra,Female,Upper,Mortal,anger
+15,Aeschylus,Eumenides,Orestes,Male,Upper,Mortal,anger
+16,Aeschylus,Eumenides,The Priestess of Pythian Apollo,Female,Lower,Mortal,joy
+291,Aeschylus,Eumenides,Audience,Not Available,Not Available,Not Available,Not Available
+292,Aeschylus,Eumenides,Herald,Not Available,Not Available,Not Available,Not Available
+293,Aeschylus,Eumenides,Jurymen,Not Available,Not Available,Not Available,Not Available
+17,Aeschylus,LibationBearers,Aegisthus,Male,Upper,Mortal,fear
+18,Aeschylus,LibationBearers,Chorus,Female,Lower,Mortal,fear
+19,Aeschylus,LibationBearers,Clytemnestra,Female,Upper,Mortal,anger
+20,Aeschylus,LibationBearers,Electra,Female,Upper,Mortal,joy
+21,Aeschylus,LibationBearers,Nurse,Female,Lower,Mortal,neutral
+22,Aeschylus,LibationBearers,Orestes,Male,Upper,Mortal,anger
+23,Aeschylus,LibationBearers,Pylades,Male,Upper,Mortal,fear
+24,Aeschylus,LibationBearers,Servant,Male,Lower,Mortal,neutral
+294,Aeschylus,LibationBearers,Audience,Not Available,Not Available,Not Available,Not Available
+25,Aeschylus,Persians,Atossa,Female,Upper,Mortal,sadness
+26,Aeschylus,Persians,Chorus,Male,Lower,Mortal,joy
+27,Aeschylus,Persians,Darius,Male,Upper,Mortal,fear
+28,Aeschylus,Persians,Messenger,Male,Lower,Mortal,sadness
+29,Aeschylus,Persians,Xerxes,Male,Upper,Mortal,sadness
+295,Aeschylus,Persians,Audience,Not Available,Not Available,Not Available,Not Available
+30,Aeschylus,PrometheusBound,Chorus,Female,Upper,Immortal,sadness
+31,Aeschylus,PrometheusBound,Hephaestus,Male,Upper,Immortal,anger
+32,Aeschylus,PrometheusBound,Hermes,Male,Upper,Immortal,anger
+33,Aeschylus,PrometheusBound,Io,Female,Upper,Immortal,anger
+34,Aeschylus,PrometheusBound,Oceanus,Male,Upper,Immortal,anger
+35,Aeschylus,PrometheusBound,Power,Male,Upper,Immortal,anger
+36,Aeschylus,PrometheusBound,Prometheus,Male,Upper,Immortal,anger
+296,Aeschylus,PrometheusBound,Audience,Not Available,Not Available,Not Available,Not Available
+297,Aeschylus,PrometheusBound,Might,Not Available,Not Available,Not Available,Not Available
+37,Aeschylus,SevenAgainst,Antigone,Female,Upper,Mortal,sadness
+38,Aeschylus,SevenAgainst,Chorus,Female,Lower,Mortal,fear
+39,Aeschylus,SevenAgainst,Eteocles,Male,Upper,Mortal,anger
+40,Aeschylus,SevenAgainst,Herald,Male,Lower,Mortal,anger
+41,Aeschylus,SevenAgainst,Ismene,Female,Upper,Mortal,sadness
+42,Aeschylus,SevenAgainst,Messenger,Male,Lower,Mortal,sadness
+43,Aeschylus,SevenAgainst,Scout,Male,Lower,Mortal,fear
+298,Aeschylus,SevenAgainst,Audience,Not Available,Not Available,Not Available,Not Available
+44,Aeschylus,SuppliantWomen,A Danaid,Female,Lower,Mortal,anger
+45,Aeschylus,SuppliantWomen,Chorus,Female,Upper,Mortal,fear
+46,Aeschylus,SuppliantWomen,Danaus,Male,Upper,Mortal,fear
+47,Aeschylus,SuppliantWomen,Herald,Male,Lower,Mortal,anger
+48,Aeschylus,SuppliantWomen,King,Male,Upper,Mortal,neutral
