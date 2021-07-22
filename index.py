@@ -6,29 +6,37 @@ from dash.dependencies import Input, Output
 from app import app
 from app import server
 # Connect to your app pages
-from apps import authors, characters
+from apps import authors, characters, topics
 
 app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),
     html.Div([
-        dcc.Link('Authors|', href='/apps/authors'),
-        dcc.Link('Characters', href='/apps/characters'),
+        dcc.Tabs(id='tabs', value='authors', children=[
+            dcc.Tab(label='Authors', value='authors'),
+            dcc.Tab(label='Characters', value='characters'),
+            dcc.Tab(label='Topics', value='topics'),
+        ])
     ], className="row"),
     html.Div(id='page-content',
              children=[])
 ],
-    style={'font-family': 'Rockwell'})
+    style={'font-family': 'Rockwell',
+           'font-size': '1.2em',
+           'color': 'red',
+           'font-weight': 'bold',
+           })
 
 
 @app.callback(Output('page-content', 'children'),
-              [Input('url', 'pathname')])
-def display_page(pathname):
-    if pathname == '/apps/authors':
+              [Input('tabs', 'value')])
+def display_page(tab):
+    if tab == 'authors':
         return authors.layout
-    if pathname == '/apps/characters':
+    if tab == 'characters':
         return characters.layout
+    if tab == 'topics':
+        return topics.layout
     else:
-        return "Please choose a link"
+        return "Please choose a tab"
 
 
 if __name__ == '__main__':

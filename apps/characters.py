@@ -4,9 +4,12 @@ import dash_core_components as dcc
 import dash_cytoscape as cyto
 import dash_html_components as html
 import pandas as pd
+import plotly.express as px
 from dash.dependencies import Output, Input
+from textwrap3 import wrap
 
 from app import app
+from apps import helper_methods
 from assets import stylesheet, legend_stylesheet
 
 # get relative data folder
@@ -23,6 +26,7 @@ def label(char, g, c, d, be):
 
 
 # ---------- Import and clean data (importing csv into pandas)
+data = pd.read_csv(DATA_PATH.joinpath("Authors.csv"))
 
 # Read Nodes data
 nodes = pd.read_csv(DATA_PATH.joinpath("Authors_N.csv"))
@@ -85,9 +89,11 @@ legend_elements = [
 ]
 
 layout = html.Div([
-    html.H1("Data from Authors", style={'text-align': 'center'}),
+    html.H4("Character's network from Greek Tragedy literature", style={
+        'text-align': 'center',
+        'padding': 25
+    }),
     html.Div([
-
         html.Div([
             html.Label('Select Author'),
             dcc.Dropdown(id="slct_author",
@@ -128,7 +134,7 @@ layout = html.Div([
                 layout={'name': 'circle',  # grid
                         'animate': True},
                 elements=my_elements,
-                style={'width': '90vw', 'height': '90vh'},
+                style={'width': '90vw', 'height': '70vh'},
                 stylesheet=stylesheet.stylesheet
             )
         ], style={'width': '80%', 'display': 'inline-block'}),
@@ -141,22 +147,29 @@ layout = html.Div([
                         'rows': 11,
                         'animate': True},
                 elements=legend_elements,
-                style={'height': '98vh'},
+                style={'height': '70vh'},
                 stylesheet=legend_stylesheet.stylesheet
             )
         ], style={'width': '18%', 'display': 'inline-block'}),
-    ],
-        className='twelve columns'),
+
+    ]),
+    html.Div([
+        dcc.Graph(id='play_vader', figure={}),
+    ]),
 ],
-    style={'font-family': 'Rockwell'},
-    className='row',
+    style={'font-family': 'Rockwell',
+           'font-size': 'medium',
+           'color': 'black',
+           'font-weight': 'normal',
+           },
+    # className='row',
 )
 
 
 @app.callback(Output("characters", "elements"),
               [Input(component_id='slct_author', component_property='value'),
                Input(component_id='slct_play', component_property='value')])
-def update_layout(author, play):
+def update_layout_1(author, play):
     filterNodes = nodes[(nodes['authorname'] == author) & (nodes['playname'] == play)]
     tempNodes = filterNodes[['id', 'label', 'gender', 'class', 'divinity', 'bert_emotion']]
     node2dic = tempNodes.to_dict('index')
@@ -172,3 +185,56 @@ def update_layout(author, play):
 
     all_elements = finalnodes + finaledges
     return all_elements
+
+
+@app.callback(
+    Output(component_id='play_vader', component_property='figure'),
+    [Input(component_id='slct_author', component_property='value'),
+     Input(component_id='slct_play', component_property='value')])
+def update_graph_1(author, play):
+    dff1 = data.copy()
+    dff1["Dialogue"] = dff1["Dialogue"].apply(lambda t: "<br>".join(wrap(t)))
+
+    print('\n Author: ', author)
+    authordf = dff1.loc[dff1['AuthorName'] == author]
+
+    playdf = authordf.loc[authordf['PlayName'] == play]
+    playdf.reset_index(drop=True, inplace=True)
+
+    # Bar plot with VADER Sentiment vs Topics
+    fig1 = px.bar(playdf,
+                  x="ParagraphNumber",
+                  y="VADER_Score",
+                  color="Dominant_Topic_1",
+                  labels=helper_methods.labels,
+                  hover_data={"CharacterName": True,
+                              "Dialogue": True,
+                              "BERT_Emotion": True,
+                              "Dominant_Topic_1": True,
+                              "Topic_Keywords_1": True,
+                              # "TK_inDialogue": True
+                              },
+                  color_discrete_map=helper_methods.Dominant_Topic,
+                  category_orders=helper_methods.Topic_Order,
+                  title='<b>Author(' + author + ')=>Play(' + play + '): ' + 'VADER Sentiment and topics in each '
+                                                                            'paragraph</b>')
+    fig1.update_layout(
+        hoverlabel=dict(
+            # bgcolor="white",
+            font_size=13,
+            font_family="Rockwell"),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            itemclick="toggleothers",
+            itemdoubleclick="toggle"),
+        legend_title_text='Topics: ',
+        autotypenumbers="strict",
+        # xaxis=dict(
+        #     tickmode='linear')
+    )
+
+    return fig1
