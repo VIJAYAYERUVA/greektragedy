@@ -1,5 +1,6 @@
 import pathlib
 
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import numpy as np
@@ -21,28 +22,43 @@ data = pd.read_csv(DATA_PATH.joinpath("Authors.csv"))
 
 authors = data['AuthorName'].value_counts().index.tolist()
 
-layout = html.Div([
-    html.H4("Classical Greek Tragedy literature analytics", style={
-        'text-align': 'center',
-        'padding': 25
-    }),
-
-    html.Div([
-        html.Div(
-            id="authors_count",
-            children=[
-                dcc.Graph(id='authors_dcount', figure={}),
-            ],
-            style={'width': '46%', 'display': 'inline-block'}),
-
-        html.Div([],
-                 style={'width': '7%', 'display': 'inline-block'}),
-
-        html.Div([
-            dcc.Graph(id='authors_gcdcount', figure={}),
-        ],
-            style={'width': '46%', 'float': 'right', 'display': 'inline-block'}),
+layout = dbc.Container([
+    dbc.Row([
+        dbc.Col([
+            html.H4("Explore the Authors",
+                    className='text-center font-weight-bold ml-4 mr-4 mt-4 mb-4')
+        ], width=12)
     ]),
+    dbc.Row([
+        dbc.Col([
+            dcc.Graph(id='authors_dcount', figure={})
+        ],
+            width={'offset': 1},
+            xs=11, sm=11, md=11, lg=5, xl=5),
+        dbc.Col([
+            dcc.Graph(id='authors_bert', figure={})
+        ],
+            width={'offset': 1},
+            xs=11, sm=11, md=11, lg=5, xl=5
+        )
+    ]),
+
+    # html.Div([
+    #     html.Div(
+    #         id="authors_count",
+    #         children=[
+    #             dcc.Graph(id='authors_dcount', figure={}),
+    #         ],
+    #         style={'width': '46%', 'display': 'inline-block'}),
+    #
+    #     html.Div([],
+    #              style={'width': '7%', 'display': 'inline-block'}),
+    #
+    #     html.Div([
+    #         dcc.Graph(id='authors_gcdcount', figure={}),
+    #     ],
+    #         style={'width': '46%', 'float': 'right', 'display': 'inline-block'}),
+    # ]),
 
     html.Div([
         html.Div(
@@ -110,12 +126,12 @@ layout = html.Div([
     ], style={}
     ),
 
-], style={
-    'font-family': 'Rockwell',
-    'font-size': 'medium',
-    'color': 'black',
-    'font-weight': 'normal'
-})
+],
+    fluid=True,
+    style={
+        'color': 'black'
+    },
+)
 
 
 # ------------------------------------------------------------------------------
@@ -149,24 +165,9 @@ def update_graph_1(authors_count):
 
     fig1.update_layout(
         title='<b>Total #dialogues from three authors</b>',
-        title_x=0.5,
-        font_size=13,
-        font_family='Rockwell',
-        margin=dict(l=0, r=0, b=0),
-        hoverlabel=dict(
-            # bgcolor="white",
-            font_size=16,
-            font_family="Rockwell"),
         legend_title_text='Authors',
-        autotypenumbers="strict",
-        hoverlabel_align='right',
-        template="simple_white",
-        autosize=False,
-        width=800,
-        height=600,
-        legend=dict(
-            orientation="h", ),
     )
+    fig1.update_layout(helper_methods.update_layout1)
 
     # fig2 creation
     authors = sorted(dff1['AuthorName'].unique())
@@ -236,21 +237,8 @@ def update_graph_1(authors_count):
     # Update title and height
     fig2.update_layout(
         title='<b>Total #characters from three authors including Gender, Class, Divinity</b>',
-        title_x=0.5,
-        font_size=13,
-        font_family='Rockwell',
-        margin=dict(l=0, r=0, b=0),
-        hoverlabel=dict(
-            font_size=12,
-            font_family='Rockwell'),
-        template="simple_white",
-        autosize=False,
-        width=800,
-        height=600,
-        legend=dict(
-            orientation="h",
-        ),
     )
+    fig2.update_layout(helper_methods.update_layout1)
     return fig1, fig2
 
 
@@ -297,24 +285,9 @@ def update_graph_2(authors_count):
 
     fig1.update_layout(
         title='<b>Distribution of Sentiments in Authors</b>',
-        title_x=0.5,
-        font_size=13,
-        font_family='Rockwell',
-        margin=dict(l=0, r=0, b=0),
-        hoverlabel=dict(
-            # bgcolor="white",
-            font_size=16,
-            font_family="Rockwell"),
         legend_title_text='VADER Sentiment',
-        autotypenumbers="strict",
-        hoverlabel_align='right',
-        template="simple_white",
-        autosize=False,
-        width=800,
-        height=600,
-        legend=dict(
-            orientation="h", )
     )
+    fig1.update_layout(helper_methods.update_layout1)
 
     dff3 = data.copy()
 
@@ -351,24 +324,9 @@ def update_graph_2(authors_count):
 
     fig2.update_layout(
         title='<b>Distribution of Emotions in Authors</b>',
-        title_x=0.5,
-        font_size=13,
-        font_family='Rockwell',
-        margin=dict(l=0, r=0, b=0),
-        hoverlabel=dict(
-            # bgcolor="white",
-            font_size=16,
-            font_family="Rockwell"),
         legend_title_text='BERT Emotions',
-        autotypenumbers="strict",
-        hoverlabel_align='right',
-        template="simple_white",
-        autosize=False,
-        width=800,
-        height=600,
-        legend=dict(
-            orientation="h", )
     )
+    fig2.update_layout(helper_methods.update_layout1)
 
     return fig1, fig2
 
@@ -433,26 +391,13 @@ def update_graph_3(option_slctd1, option_slctd2):
 
     fig1.update_layout(
         title='<b>Distribution of Emotions in Author(' + option_slctd1 + ')</b>',
-        title_x=0.5,
-        font_size=13,
-        font_family='Rockwell',
-        margin=dict(l=0, r=0, b=0),
-        hoverlabel=dict(
-            # bgcolor="white",
-            font_size=12,
-            font_family="Rockwell"),
         legend_title_text='Emotions',
-        autotypenumbers="strict",
-        hoverlabel_align='right',
-        template="simple_white",
-        autosize=False,
-        width=800,
-        height=600,
         legend=dict(
             orientation="h",
             x=0,
             y=-0.25, )
     )
+    fig1.update_layout(helper_methods.update_layout1)
 
     print('Author2: ', option_slctd2)
     container2 = "The Author chosen by user was: {}".format(option_slctd2)
@@ -505,25 +450,12 @@ def update_graph_3(option_slctd1, option_slctd2):
 
     fig2.update_layout(
         title='<b>Distribution of Emotions in Author(' + option_slctd2 + ')</b>',
-        title_x=0.5,
-        font_size=13,
-        font_family='Rockwell',
-        margin=dict(l=0, r=0, b=0),
-        hoverlabel=dict(
-            # bgcolor="white",
-            font_size=12,
-            font_family="Rockwell"),
         legend_title_text='Emotions',
-        autotypenumbers="strict",
-        hoverlabel_align='right',
-        template="simple_white",
-        autosize=False,
-        width=800,
-        height=600,
         legend=dict(
             orientation="h",
             x=0,
             y=-0.25, )
     )
+    fig2.update_layout(helper_methods.update_layout1)
 
     return container1, fig1, container2, fig2
