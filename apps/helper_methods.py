@@ -118,3 +118,22 @@ update_layout2 = dict(
         x=0,
         y=1.20, )
 )
+
+update_layout3 = dict(
+    title_x=0.5,
+    font_size=13,
+    font_family='sans-serif',
+    margin=dict(l=0, r=0, b=0, t=120),
+    hoverlabel=dict(
+        font_size=12,
+        font_family='Rockwell'),
+    autotypenumbers="strict",
+    hoverlabel_align='right',
+    template="simple_white",
+    autosize=False,
+    # width=800,
+    height=600,
+    legend=dict(
+        orientation="h"
+    )
+)

@@ -220,8 +220,8 @@ def update_graph_1(author, play):
                               "Topic_Keywords_1": True,
                               # "TK_inDialogue": True
                               },
-                  color_discrete_map=helper_methods.Dominant_Topic,
-                  category_orders=helper_methods.Topic_Order,
+                  color_discrete_map=helper_methods.topic_color,
+                  category_orders=helper_methods.topic_order,
                   title='<b>Author(' + author + ')=>Play(' + play + '): ' + 'VADER Sentiment and topics in each '
                                                                             'paragraph</b>')
     fig1.update_layout(
