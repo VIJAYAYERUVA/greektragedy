@@ -26,14 +26,14 @@ layout = dbc.Container([
     dbc.Row(id='title',
             children=[
                 dbc.Col([
-                    html.H1("Explore the Authors", className='text-center font-weight-bold ml-4 mr-4 mt-4 mb-4')
+                    html.H2("Explore the Authors", className='text-center font-weight-bold ml-4 mr-4 mt-4 mb-4')
                 ],
                     xs=12, sm=12, md=12, lg=12, xl=12,
                 )
             ],
             justify='center',
             align='center',
-            className='mb-4'
+            # className='mb-4'
             ),
     dbc.Row(id='authors_count',
             children=[
@@ -198,10 +198,7 @@ layout = dbc.Container([
             ),
 
 ],
-    fluid=True,
-    style={
-        'color': 'black'
-    }
+    fluid=True
 )
 
 
@@ -948,3 +945,4 @@ def update_row_6(authors_characters_gcd):
     )
     fig12.update_layout(helper_methods.update_layout3)
     return fig11, fig12
+

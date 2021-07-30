@@ -7,48 +7,60 @@ from app import app
 from app import server
 from apps import about, authors, plays, characters, topics
 
-app.layout = dbc.Container([
-    dbc.Row([
-        dbc.Col([
-            dcc.Tabs(id='tabs', value='about', children=[
-                dcc.Tab(label='About', value='about'),
-                dcc.Tab(label='Authors', value='authors'),
-                dcc.Tab(label='Plays', value='plays'),
-                dcc.Tab(label='Characters', value='characters'),
-                dcc.Tab(label='Topics', value='topics'),
-            ])
-        ])
-    ]),
-    dbc.Row([
-        dbc.Col([
-            html.Div(id='page-content',
-                     children=[])
-        ])
-    ])
-],
-    fluid=True,
-    style={
-        'font-size': '1.2em',
-        'color': 'red',
-    }
+app.layout = html.Div(
+    [
+        dcc.Location(
+            id="url",
+            pathname="/apps/about"
+        ),
+        dbc.NavbarSimple(
+            children=[
+                dbc.NavLink("Home", href="/apps/about", active="exact"),
+                dbc.NavLink("Authors", href="/apps/authors", active="exact"),
+                dbc.NavLink("Plays", href="/apps/plays", active="exact"),
+                dbc.NavLink("Characters", href="/apps/characters", active="exact"),
+                dbc.NavLink("Topics", href="/apps/topics", active="exact"),
+            ],
+            brand="Classical Greek Tragedy",
+            brand_style={
+                'font-size': '20px'
+            },
+            color="dark",
+            dark=True,
+            style={
+                'font-size': '20px'
+            },
+        ),
+        dbc.Container(
+            id="page-content",
+            className="pt-4",
+            fluid=True),
+    ]
 )
 
 
-@app.callback(Output('page-content', 'children'),
-              [Input('tabs', 'value')])
-def display_page(tab):
-    if tab == 'about':
+@app.callback(Output("page-content", "children"),
+              [Input("url", "pathname")])
+def render_page_content(pathname):
+    if pathname == '/apps/about':
         return about.layout
-    if tab == 'authors':
+    if pathname == '/apps/authors':
         return authors.layout
-    if tab == 'plays':
+    if pathname == '/apps/plays':
         return plays.layout
-    if tab == 'characters':
+    if pathname == '/apps/characters':
         return characters.layout
-    if tab == 'topics':
+    if pathname == '/apps/topics':
         return topics.layout
-    else:
-        return "Please choose a tab"
+
+    # If the user tries to reach a different page, return a 404 message
+    return dbc.Jumbotron(
+        [
+            html.H1("404: Not found", className="text-danger"),
+            html.Hr(),
+            html.P(f"The pathname {pathname} was not recognised..."),
+        ]
+    )
 
 
 if __name__ == '__main__':

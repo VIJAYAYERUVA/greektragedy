@@ -6,7 +6,7 @@ stylesheet = [
         'style': {
             'label': 'data(label)',
             # 'background-color': 'blue',
-            'font-family': 'Rockwell',
+            'font-family': 'sans-serif',
             'font-size': 16,
             'font-weight': 'bolder',
         }

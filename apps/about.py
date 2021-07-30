@@ -13,14 +13,13 @@ layout = dbc.Container([
         ''',
                          className='text-center mb-4'
                          ),
-            width=12
-        )
+            xs=11, sm=11, md=11, lg=11, xl=11)
     ),
     dbc.Row(
         dbc.Col(
             html.H1("Greek Literature",
                     className='font-weight-bold mb-4'),
-            width=12)
+            xs=11, sm=11, md=11, lg=11, xl=11)
     ),
     dbc.Row(
         dbc.Col(
@@ -28,7 +27,7 @@ layout = dbc.Container([
                 'The Ancient Greeks took their entertainment very seriously and used drama to investigate the world '
                 'they lived in and what it meant to be human.',
             ),
-            width=12)
+            xs=11, sm=11, md=11, lg=11, xl=11)
     ),
     dbc.Row(
         dbc.Col(
@@ -36,7 +35,7 @@ layout = dbc.Container([
         The three genres of drama were _**comedy**_, _**satyr plays**_, and most important of all, _**tragedy**_.
         ''',
                          className='mb-4'),
-            width=12)
+            xs=11, sm=11, md=11, lg=11, xl=11)
     ),
     dbc.Row(
         dbc.Col(
@@ -48,7 +47,7 @@ layout = dbc.Container([
                     'Menander wrote comedies about ordinary people and made his plays more like sitcoms.'
                 )
             ]),
-            width=12)
+            xs=11, sm=11, md=11, lg=11, xl=11)
     ),
     dbc.Row(
         dbc.Col(
@@ -62,7 +61,7 @@ layout = dbc.Container([
                 Euripides, and Sophocles**.
                 ''')
             ]),
-            width=12)
+            xs=11, sm=11, md=11, lg=11, xl=11)
     ),
     dbc.Row(
         dbc.Col(
@@ -74,24 +73,24 @@ layout = dbc.Container([
                     'Menander wrote comedies about ordinary people and made his plays more like sitcoms.'
                 )
             ]),
-            width=12)
+            xs=11, sm=11, md=11, lg=11, xl=11)
     ),
     dbc.Row(
         dbc.Col(
             html.H2("Greek Tragedy",
                     className='font-weight-bold mb-4'),
-            width=12)
+            xs=11, sm=11, md=11, lg=11, xl=11)
     ),
     dbc.Row([
 
         dbc.Col([
-            html.Img(src='assets/Dionysos_mask.jpg',
+            html.Img(src='../assets/Dionysos_mask.jpg',
                      alt="Dionysos's Mask",
                      title="Dionysos's Mask",
                      style={'height': '100px', 'width': '80px'}
                      )
 
-        ], xs=12, sm=12, md=12, lg=1, xl=1),
+        ], xs=11, sm=11, md=11, lg=1, xl=1),
 
         dbc.Col([
             dcc.Markdown('''
@@ -103,7 +102,7 @@ layout = dbc.Container([
             way of connecting with the audience and bringing the audience into the play.
             ''',
                          )
-        ], xs=12, sm=12, md=12, lg=11, xl=11),
+        ], xs=11, sm=11, md=11, lg=10, xl=10),
     ],
         className='mb-4',
         no_gutters=False,
@@ -112,14 +111,14 @@ layout = dbc.Container([
         dbc.Col(
             html.H4("Greek Tragedy Authors: Aeschylus, Euripides, and Sophocles",
                     className='font-weight-bold'),
-            width=12)
+            xs=11, sm=11, md=11, lg=11, xl=11)
     ),
     dbc.Row([
         dbc.Col([
             dbc.Card(
                 [
                     dbc.CardImg(
-                        src='assets/Aeschylus.JPG',
+                        src='../assets/Aeschylus.JPG',
                         title='Aeschylus',
                         top=True,
                         style={'height': '13rem', 'width': '11rem'}
@@ -136,7 +135,7 @@ layout = dbc.Container([
             dbc.Card(
                 [
                     dbc.CardImg(
-                        src='assets/Euripides.jpg',
+                        src='../assets/Euripides.jpg',
                         title='Euripides',
                         top=True,
                         style={'height': '13rem', 'width': '11rem'}
@@ -152,7 +151,7 @@ layout = dbc.Container([
             dbc.Card(
                 [
                     dbc.CardImg(
-                        src='assets/Sophocles.jpg',
+                        src='../assets/Sophocles.jpg',
                         title='Sophocles',
                         top=True,
                         style={'height': '13rem', 'width': '11rem'}
@@ -165,7 +164,7 @@ layout = dbc.Container([
                 ],
                 style={'height': '17rem', 'width': '11rem', 'display': 'inline-block'},
             )
-        ], width=12),
+        ], xs=11, sm=11, md=11, lg=11, xl=11),
     ],
         className='mb-4',
         justify="start"),
@@ -173,7 +172,7 @@ layout = dbc.Container([
         dbc.Col(
             html.H5("References:",
                     className='font-weight-bold'),
-            width=12)
+            xs=11, sm=11, md=11, lg=11, xl=11)
 
     ]),
     dbc.Row([
@@ -182,7 +181,7 @@ layout = dbc.Container([
                     children=[html.Li(dcc.Link(href=i, target='_blank')) for i in List]),
 
         ],
-            width=12)
+            xs=11, sm=11, md=11, lg=11, xl=11)
     ])
 
 ],
