@@ -134,6 +134,70 @@ layout = dbc.Container([
             align='center',
             className='mb-4',
             ),
+    dbc.Row(id='plays_set_timeline',
+            children=[
+                dbc.Col([
+                    html.Label(children=[
+                        html.Label('Select Author and Play to check'),
+                        html.Strong(' Sentiment '),
+                        html.Label('along the narrative')]
+                    ),
+                    dcc.Dropdown(id="author_senti_timeline",
+                                 options=[{'label': a, 'value': a} for a in play_list.keys()],
+                                 multi=False,
+                                 value='Aeschylus',
+                                 ),
+                    dcc.Dropdown(id="play_s_timeline",
+                                 multi=False,
+                                 ),
+                    html.Div(id='container_senti_timeline', children=[]),
+                    dcc.Graph(id='plays_vader_timeline', figure={}, config=helper_methods.config),
+                ],
+                    xs=12, sm=12, md=12, lg=4, xl=4
+                ),
+                dbc.Col([
+                    html.Label(children=[
+                        html.Label('Select Author and Play to check'),
+                        html.Strong(' Emotions '),
+                        html.Label('along the narrative')]
+                    ),
+                    dcc.Dropdown(id="author_emotion_timeline",
+                                 options=[{'label': a, 'value': a} for a in play_list.keys()],
+                                 multi=False,
+                                 value='Aeschylus'
+                                 ),
+                    dcc.Dropdown(id="play_e_timeline",
+                                 multi=False,
+                                 ),
+                    html.Div(id='container_emotion_timeline', children=[]),
+                    dcc.Graph(id='plays_bert_timeline', figure={}, config=helper_methods.config),
+                ],
+                    xs=12, sm=12, md=12, lg=4, xl=4
+                ),
+                dbc.Col([
+                    html.Label(children=[
+                        html.Label('Select Author and Play to check'),
+                        html.Strong(' Topics '),
+                        html.Label('along the narrative')]
+                    ),
+                    dcc.Dropdown(id="author_topic_timeline",
+                                 options=[{'label': a, 'value': a} for a in play_list.keys()],
+                                 multi=False,
+                                 value='Aeschylus'
+                                 ),
+                    dcc.Dropdown(id="play_t_timeline",
+                                 multi=False,
+                                 ),
+                    html.Div(id='container_topic_timeline', children=[]),
+                    dcc.Graph(id='plays_topic_timeline', figure={}, config=helper_methods.config),
+                ],
+                    xs=12, sm=12, md=12, lg=4, xl=4
+                ),
+            ],
+            justify='center',
+            align='center',
+            className='mb-4',
+            ),
     dbc.Row(id='network_title',
             children=[
                 dbc.Col([
@@ -426,7 +490,7 @@ def update_row_2(author_s_character, play_s_character, author_e_character, play_
 # Dropdown for sentiment in timeline
 @app.callback(
     dash.dependencies.Output('play_s_timeline', 'options'),
-    [dash.dependencies.Input('author_s_timeline', 'value')])
+    [dash.dependencies.Input('author_senti_timeline', 'value')])
 def set_timeline_options_s_c(selected_author):
     return [{'label': i, 'value': i} for i in play_list[selected_author]]
 
@@ -441,7 +505,7 @@ def set_timeline_values_s_c(available_options):
 # Dropdown for emotions in timeline
 @app.callback(
     dash.dependencies.Output('play_e_timeline', 'options'),
-    [dash.dependencies.Input('author_e_timeline', 'value')])
+    [dash.dependencies.Input('author_emotion_timeline', 'value')])
 def set_timeline_options_e_c(selected_author):
     return [{'label': i, 'value': i} for i in play_list[selected_author]]
 
@@ -456,7 +520,7 @@ def set_timeline_values_e_c(available_options):
 # Dropdown for topics in timeline
 @app.callback(
     dash.dependencies.Output('play_t_timeline', 'options'),
-    [dash.dependencies.Input('author_t_timeline', 'value')])
+    [dash.dependencies.Input('author_topic_timeline', 'value')])
 def set_timeline_options_t_c(selected_author):
     return [{'label': i, 'value': i} for i in play_list[selected_author]]
 
@@ -466,6 +530,182 @@ def set_timeline_options_t_c(selected_author):
     [dash.dependencies.Input('play_t_timeline', 'options')])
 def set_timeline_values_t_c(available_options):
     return available_options[0]['value']
+
+
+@app.callback(
+    [Output(component_id='container_senti_timeline', component_property='children'),
+     Output(component_id='plays_vader_timeline', component_property='figure'),
+     Output(component_id='container_emotion_timeline', component_property='children'),
+     Output(component_id='plays_bert_timeline', component_property='figure'),
+     Output(component_id='container_topic_timeline', component_property='children'),
+     Output(component_id='plays_topic_timeline', component_property='figure')],
+    [Input(component_id='author_senti_timeline', component_property='value'),
+     Input(component_id='play_s_timeline', component_property='value'),
+     Input(component_id='author_emotion_timeline', component_property='value'),
+     Input(component_id='play_e_timeline', component_property='value'),
+     Input(component_id='author_topic_timeline', component_property='value'),
+     Input(component_id='play_t_timeline', component_property='value')
+     ]
+)
+def update_row_3(author_senti_timeline, play_s_timeline, author_emotion_timeline, play_e_timeline, author_topic_timeline,
+                 play_t_timeline):
+    # fig4 creation
+    # print(f'Author: {author_senti_timeline}, Play:{play_s_timeline}')
+    container_senti_timeline = f"The options selected by user was: {author_senti_timeline}, {play_s_timeline}"
+
+    dff4 = data.copy()
+
+    authordf4 = dff4.loc[dff4['AuthorName'] == author_senti_timeline]
+    playdf4 = authordf4.loc[authordf4['PlayName'] == play_s_timeline]
+
+    playDistribution1 = np.array_split(playdf4, 10)
+
+    tempdf1 = []
+    for i, part in enumerate(playDistribution1):
+        part['PofPlay'] = (i + 1) * 10
+        part['PofPlay'] = part['PofPlay'].apply(helper_methods.percentagelabel)
+        tempdf1.append(part)
+    tempdf1 = pd.concat(tempdf1)
+
+    playdf4 = tempdf1
+
+    # Get all characters from each play
+    df4 = (playdf4.groupby(['PofPlay', 'VADER_Label']).size()).reset_index()
+    df4.rename(columns={0: 'NoOfDialogues'}, inplace=True)
+
+    df4 = df4.groupby(['PofPlay', 'VADER_Label']).agg({'NoOfDialogues': 'sum'})
+    df4['PercentageOfDialogues'] = df4.groupby(level=0).apply(helper_methods.percentage)
+    df4 = df4.reset_index()
+
+    # Stacked Bar plot with Play's character vs. VADER Sentiment
+    fig4 = px.bar(df4,
+                  x="PofPlay",
+                  y="PercentageOfDialogues",
+                  color="VADER_Label",
+                  labels=helper_methods.labels,
+                  hover_name='PofPlay',
+                  hover_data={
+                      "PofPlay": False,
+                      "PercentageOfDialogues": ':.2f'
+                  },
+                  color_discrete_map=helper_methods.vader_color,
+                  category_orders=helper_methods.vader_order,
+                  # text=df4['VADER_Label']
+                  # text=df4['PercentageOfDialogues'].apply(lambda x: '{0:1.2f}%'.format(x))
+                  )
+    fig4.update_xaxes(title_text="")
+    fig4.update_traces(cliponaxis=False)
+    fig4.update_layout(
+        title='<b>Distribution of Sentiments in <br />Author(' + author_senti_timeline + ')->Play(' + play_s_timeline + ')</b>',
+        legend_title_text='Sentiment',
+    )
+    fig4.update_layout(helper_methods.update_layout4)
+
+    # fig5 creation
+    # print(f'Author: {author_emotion_timeline}, Play:{play_e_timeline}')
+    container_emotion_timeline = f"The options selected by user was: {author_emotion_timeline}, {play_e_timeline}"
+
+    dff5 = data.copy()
+
+    authordf5 = dff5.loc[dff5['AuthorName'] == author_emotion_timeline]
+    playdf5 = authordf5.loc[authordf5['PlayName'] == play_e_timeline]
+
+    playDistribution2 = np.array_split(playdf5, 10)
+
+    tempdf2 = []
+    for i, part in enumerate(playDistribution2):
+        part['PofPlay'] = (i + 1) * 10
+        part['PofPlay'] = part['PofPlay'].apply(helper_methods.percentagelabel)
+        tempdf2.append(part)
+    tempdf2 = pd.concat(tempdf2)
+
+    playdf5 = tempdf2
+
+    # Get all characters from each play
+    df5 = (playdf5.groupby(['PofPlay', 'BERT_Emotion']).size()).reset_index()
+    df5.rename(columns={0: 'NoOfDialogues'}, inplace=True)
+
+    df5 = df5.groupby(['PofPlay', 'BERT_Emotion']).agg({'NoOfDialogues': 'sum'})
+    df5['PercentageOfDialogues'] = df5.groupby(level=0).apply(helper_methods.percentage)
+    df5 = df5.reset_index()
+
+    # Stacked Bar plot with Play's character vs. VADER Sentiment
+    fig5 = px.bar(df5,
+                  x="PofPlay",
+                  y="PercentageOfDialogues",
+                  color="BERT_Emotion",
+                  labels=helper_methods.labels,
+                  hover_name='PofPlay',
+                  hover_data={
+                      "PofPlay": False,
+                      "PercentageOfDialogues": ':.2f'
+                  },
+                  color_discrete_map=helper_methods.bert_color,
+                  category_orders=helper_methods.bert_order,
+                  # text=df5['BERT_Emotion']
+                  # text=df5['PercentageOfDialogues'].apply(lambda x: '{0:1.2f}%'.format(x))
+                  )
+    fig5.update_xaxes(title_text="")
+    fig5.update_traces(cliponaxis=False)
+    fig5.update_layout(
+        title='<b>Distribution of Emotions in <br />Author(' + author_emotion_timeline + ')->Play(' + play_e_timeline + ')</b>',
+        legend_title_text='Sentiment',
+    )
+    fig5.update_layout(helper_methods.update_layout4)
+
+    # fig6 creation
+    # print(f'Author: {author_topic_timeline}, Play:{play_t_timeline}')
+    container_topic_timeline = f"The options selected by user was: {author_topic_timeline}, {play_t_timeline}"
+
+    dff6 = data.copy()
+
+    authordf6 = dff6.loc[dff6['AuthorName'] == author_topic_timeline]
+    playdf6 = authordf6.loc[authordf6['PlayName'] == play_t_timeline]
+
+    playDistribution3 = np.array_split(playdf6, 10)
+
+    tempdf3 = []
+    for i, part in enumerate(playDistribution3):
+        part['PofPlay'] = (i + 1) * 10
+        part['PofPlay'] = part['PofPlay'].apply(helper_methods.percentagelabel)
+        tempdf3.append(part)
+    tempdf3 = pd.concat(tempdf3)
+
+    playdf6 = tempdf3
+
+    # Get all characters from each play
+    df6 = (playdf6.groupby(['PofPlay', 'Dominant_Topic_1']).size()).reset_index()
+    df6.rename(columns={0: 'NoOfDialogues'}, inplace=True)
+
+    df6 = df6.groupby(['PofPlay', 'Dominant_Topic_1']).agg({'NoOfDialogues': 'sum'})
+    df6['PercentageOfDialogues'] = df6.groupby(level=0).apply(helper_methods.percentage)
+    df6 = df6.reset_index()
+
+    # Stacked Bar plot with Play's character vs. VADER Sentiment
+    fig6 = px.bar(df6,
+                  x="PofPlay",
+                  y="PercentageOfDialogues",
+                  color="Dominant_Topic_1",
+                  labels=helper_methods.labels,
+                  hover_name='PofPlay',
+                  hover_data={
+                      "PofPlay": False,
+                      "PercentageOfDialogues": ':.2f'
+                  },
+                  color_discrete_map=helper_methods.topic_color,
+                  category_orders=helper_methods.topic_order,
+                  # text=df6['Dominant_Topic_1']
+                  # text=df6['PercentageOfDialogues'].apply(lambda x: '{0:1.2f}%'.format(x))
+                  )
+    fig6.update_xaxes(title_text="")
+    fig6.update_traces(cliponaxis=False)
+    fig6.update_layout(
+        title='<b>Distribution of Topics in <br />Author(' + author_topic_timeline + ')->Play(' + play_t_timeline + ')</b>',
+        legend_title_text='Sentiment',
+    )
+    fig6.update_layout(helper_methods.update_layout4)
+
+    return container_senti_timeline, fig4, container_emotion_timeline, fig5, container_topic_timeline, fig6
 
 
 # Update network
@@ -503,7 +743,7 @@ def update_row_5(author, play):
     dff7 = data.copy()
     dff7["Dialogue"] = dff7["Dialogue"].apply(lambda t: "<br>".join(wrap(t)))
 
-    # print('\n Author: ', author)
+    print('\n Author: ', author)
     authordf7 = dff7.loc[dff7['AuthorName'] == author]
 
     playdf7 = authordf7.loc[authordf7['PlayName'] == play]
