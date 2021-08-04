@@ -270,7 +270,7 @@ layout = dbc.Container([
                                 'rows': 11,
                                 'animate': True},
                         elements=legend_elements,
-                        style={'height': '70vh'},
+                        style={'height': '90vh'},
                         stylesheet=legend_stylesheet.stylesheet
                     )
                 ],
@@ -479,7 +479,7 @@ def update_row_2(author_s_character, play_s_character, author_e_character, play_
     fig3.update_traces(cliponaxis=False)
     fig3.update_layout(
         title='<b>Distribution of Topics in'
-              '<br />Author(' + author_e_character + ')->Play(' + play_e_character + ')</b>',
+              '<br />Author(' + author_t_character + ')->Play(' + play_t_character + ')</b>',
         legend_title_text='Topics',
     )
     fig3.update_layout(helper_methods.update_layout4)
@@ -547,7 +547,8 @@ def set_timeline_values_t_c(available_options):
      Input(component_id='play_t_timeline', component_property='value')
      ]
 )
-def update_row_3(author_senti_timeline, play_s_timeline, author_emotion_timeline, play_e_timeline, author_topic_timeline,
+def update_row_3(author_senti_timeline, play_s_timeline, author_emotion_timeline, play_e_timeline,
+                 author_topic_timeline,
                  play_t_timeline):
     # fig4 creation
     # print(f'Author: {author_senti_timeline}, Play:{play_s_timeline}')

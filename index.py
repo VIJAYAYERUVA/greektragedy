@@ -5,7 +5,7 @@ from dash.dependencies import Input, Output
 
 from app import app
 from app import server
-from apps import about, authors, plays, characters, topics
+from apps import about, authors, plays, characters, topics, data
 
 app.layout = html.Div(
     [
@@ -20,6 +20,7 @@ app.layout = html.Div(
                 dbc.NavLink("Plays", href="/apps/plays", active="exact"),
                 dbc.NavLink("Characters", href="/apps/characters", active="exact"),
                 dbc.NavLink("Topics", href="/apps/topics", active="exact"),
+                dbc.NavLink("Data", href="/apps/data", active="exact"),
             ],
             brand="Classical Greek Tragedy",
             brand_style={
@@ -52,7 +53,8 @@ def render_page_content(pathname):
         return characters.layout
     if pathname == '/apps/topics':
         return topics.layout
-
+    if pathname == '/apps/data':
+        return data.layout
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
         [

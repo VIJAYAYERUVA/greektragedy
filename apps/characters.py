@@ -9,7 +9,6 @@ from dash.dependencies import Input, Output
 from plotly.subplots import make_subplots
 
 from app import app
-
 from apps import helper_methods
 
 # get relative data folder
@@ -53,6 +52,7 @@ layout = dbc.Container([
             ),
 ],
     fluid=True)
+
 
 @app.callback(
     [Output(component_id='gcd_count', component_property='figure'),
